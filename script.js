@@ -56,6 +56,27 @@ const quizData = [
         furigana: "つくえ",
         options: ["椅子", "桌子", "电脑", "电视"],
         correctAnswer: "桌子"
+    },// 前の単語の「},」のすぐ後ろに貼り付けます
+    {
+        id: 11, 
+        kanji: "14日",
+        furigana: "じゅうよっか",
+        options: ["14号、十四天", "10号、十天", "4号、四天", "24号、二十四天"],
+        correctAnswer: "14号、十四天"
+    },
+    {
+        id: 12,
+        kanji: "20日",
+        furigana: "はつか",
+        options: ["20号、二十天", "2号、二天", "12号、十二天", "24号、二十四天"],
+        correctAnswer: "20号、二十天"
+    },
+    {
+        id: 13,
+        kanji: "24日",
+        furigana: "にじゅうよっか",
+        options: ["24号、二十四天", "14号、十四天", "4号、四天", "20号、二十天"],
+        correctAnswer: "24号、二十四天"
     }
 ];
 
