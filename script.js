@@ -197,6 +197,13 @@ const quizData = [
         furigana: "かえります",
         options: ["回（家、国）", "去", "来", "下班"],
         correctAnswer: "回（家、国）"
+    },
+    {
+        id: 36,
+        kanji: "仕事",
+        furigana: "しごと",
+        options: ["工作", "休息", "学習", "会議"],
+        correctAnswer: "工作"
     }
 ];
 
