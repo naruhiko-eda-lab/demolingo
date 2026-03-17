@@ -211,30 +211,27 @@ function renderQuestion() {
     elements.optionsGrid.innerHTML = '';
     selectedOption = null;
 
-    question.options.forEach(opt => {
+    // --- ここから修正：選択肢をランダムに並び替える ---
+    const shuffledOptions = [...question.options].sort(() => Math.random() - 0.5);
+
+    // question.options ではなく、混ぜ終わった shuffledOptions を使ってボタンを作ります
+    shuffledOptions.forEach(opt => {
         const btn = document.createElement('button');
         btn.className = 'option-btn';
         btn.textContent = opt;
         btn.addEventListener('click', () => {
             initAudio();
             selectOption(btn, opt);
-            speakText(opt, 'zh-CN'); // 選択肢をクリックした時に中国語で発音
+            speakText(opt, 'zh-CN'); 
         });
         elements.optionsGrid.appendChild(btn);
     });
+    // --- ここまで修正 ---
 
     resetFooter();
     state = 'answering';
     elements.quizArea.classList.remove('slide-out');
     elements.quizArea.classList.add('slide-in');
-}
-
-function selectOption(btnElement, optionValue) {
-    if (state !== 'answering') return;
-    Array.from(elements.optionsGrid.children).forEach(btn => btn.classList.remove('selected'));
-    btnElement.classList.add('selected');
-    selectedOption = optionValue;
-    elements.actionBtn.disabled = false;
 }
 
 function handleAction() {
