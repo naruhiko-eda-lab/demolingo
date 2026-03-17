@@ -162,6 +162,41 @@ const quizData = [
         furigana: "なんばん",
         options: ["几番（几号）", "什么", "多少钱", "谁"],
         correctAnswer: "几番（几号）"
+    },
+    {
+        id: 31,
+        kanji: "映画",
+        furigana: "えいが",
+        options: ["电影", "电视", "电话", "漫画"],
+        correctAnswer: "电影"
+    },
+    {
+        id: 32,
+        kanji: "学校",
+        furigana: "がっこう",
+        options: ["学校", "会社", "銀行", "図書館"],
+        correctAnswer: "学校"
+    },
+    {
+        id: 33,
+        kanji: "行きます",
+        furigana: "いきます",
+        options: ["去", "来", "回", "去（过去）"],
+        correctAnswer: "去"
+    },
+    {
+        id: 34,
+        kanji: "来ます",
+        furigana: "きます",
+        options: ["来", "去", "回", "休息"],
+        correctAnswer: "来"
+    },
+    {
+        id: 35,
+        kanji: "帰ります",
+        furigana: "かえります",
+        options: ["回（家、国）", "去", "来", "下班"],
+        correctAnswer: "回（家、国）"
     }
 ];
 
