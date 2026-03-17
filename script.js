@@ -256,17 +256,16 @@ function handleAction() {
     }
 }
 
-// script.js 内の checkAnswer 関数を以下のように上書きします
 function checkAnswer() {
     const question = quizData[currentIndex];
     const isCorrect = selectedOption === question.correctAnswer;
-    const feedbackImg = document.getElementById('feedback-img'); // 画像要素を取得
+    const feedbackImg = document.getElementById('feedback-img'); 
 
     state = 'feedback';
 
     // フィードバックエリアを表示
     elements.feedbackContainer.classList.remove('hidden');
-    elements.actionBtn.textContent = '继续';
+    elements.actionBtn.textContent = '继续'; // 次へ（継続）
 
     // 全ての選択肢ボタンを無効化
     Array.from(elements.optionsGrid.children).forEach(btn => {
@@ -275,22 +274,24 @@ function checkAnswer() {
 
     if (isCorrect) {
         elements.footer.classList.add('correct');
-        elements.feedbackTitle.textContent = '太棒了！';
+        elements.feedbackTitle.textContent = '太棒了！'; // 正解！
         elements.feedbackCorrectAnswer.classList.add('hidden');
 
-        // 正解の時の画像（ファイル名はご自身で設定したものに変えてください）
-        feedbackImg.src = 'images/correct.png';
+        // 正解の時の画像
+        if (feedbackImg) feedbackImg.src = 'images/correct.png';
 
+        // ★ここで正解の音を鳴らす
         playCorrectSound();
     } else {
         elements.footer.classList.add('incorrect');
-        elements.feedbackTitle.textContent = '不正确。';
+        elements.feedbackTitle.textContent = '不正确。'; // 不正解
         elements.feedbackCorrectAnswer.querySelector('span').textContent = question.correctAnswer;
         elements.feedbackCorrectAnswer.classList.remove('hidden');
 
         // 不正解の時の画像
-        feedbackImg.src = 'images/incorrect.png';
+        if (feedbackImg) feedbackImg.src = 'images/incorrect.png';
 
+        // ★ここで不正解の音を鳴らす
         playIncorrectSound();
     }
 }
