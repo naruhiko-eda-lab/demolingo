@@ -186,6 +186,8 @@ function resetFooter() {
 }
 
 function init() {
+    // --- ★ここを追加！ quizData自体をランダムに並び替える ---
+    quizData.sort(() => Math.random() - 0.5);
     currentIndex = 0;
     score = 0;
     renderQuestion();
