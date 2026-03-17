@@ -186,36 +186,43 @@ function resetFooter() {
 }
 
 function init() {
-    // --- ★ここを追加！ quizData自体をランダムに並び替える ---
-    quizData.sort(() => Math.random() - 0.5);
+    // 1. 出題順をランダムにする
+    quizData.sort(() => Math.random() - 0.5); 
+
     currentIndex = 0;
     score = 0;
+    state = 'question';
     renderQuestion();
 
+    // 2. 判定・次へボタンの設定
     elements.actionBtn.addEventListener('click', handleBtnClick);
 
-// スピーカーボタンの設定（修正版）
-    elements.audioBtn.addEventListener('click', () => {
-        initAudio();
-        
-        if (state === 'break') {
-            // 中間画面ならメッセージを日本語で読み上げる
-            speakText("がんばっているね！ちょっとひと休み。", 'ja-JP');
-        } else if (state === 'question' || state === 'feedback') {
-            // クイズ中なら、今の問題のふりがなを読み上げる
-            const question = quizData[currentIndex];
-            speakText(question.furigana, 'ja-JP');
-        }
-    });
-// HTML内の class="close-btn" または id="close-btn" を探します
+    // 3. ×ボタン（最初に戻る）の設定
     const closeBtn = document.querySelector('.close-btn') || document.getElementById('close-btn');
     if (closeBtn) {
         closeBtn.addEventListener('click', () => {
-            if (confirm('最初に戻りますか？')) { // 確認ダイアログ（不要ならこの1行と下の"}"を消してください）
+            if (confirm('最初に戻りますか？')) {
                 location.reload(); 
             }
         });
     }
+
+    // 4. スピーカーボタンの設定（ここを確実に修正！）
+    elements.audioBtn.addEventListener('click', () => {
+        initAudio();
+        
+        // 休憩中の場合
+        if (state === 'break') {
+            speakText("がんばっているね！ちょっとひと休み。", 'ja-JP');
+        } 
+        // それ以外（クイズ中、判定表示中、終了後など）の場合
+        else {
+            const currentQuestion = quizData[currentIndex];
+            if (currentQuestion) {
+                speakText(currentQuestion.furigana, 'ja-JP');
+            }
+        }
+    });
 }
 
 document.addEventListener('DOMContentLoaded', init);
