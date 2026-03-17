@@ -1,3 +1,8 @@
+let score = 0; // 正解数をカウント
+let currentIndex = 0;
+let selectedOption = null;
+let state = 'question';
+
 const quizData = [
     // 第1課
     {
@@ -206,10 +211,9 @@ const quizData = [
         correctAnswer: "工作"
     }
 ];
+// quizDataの定義が終わった直後に配置
+const BREAK_POINT = Math.floor(quizData.length / 2);
 
-let currentIndex = 0;
-let selectedOption = null;
-let state = 'answering';
 
 const elements = {
     progressBar: document.getElementById('progress-bar'),
@@ -346,13 +350,56 @@ function renderQuestion() {
 }
 
 function handleAction() {
-    if (state === 'answering') {
-        checkAnswer();
-    } else if (state === 'feedback') {
-        nextQuestion();
-    } else if (state === 'finished') {
-        location.reload(); // 再スタート
+    if (state === 'feedback') {
+        currentIndex++;
+        
+        // 中間地点（18問目など）なら休憩画面へ
+        if (currentIndex === BREAK_POINT) {
+            showBreakScreen();
+            return;
+        }
+
+        if (currentIndex < quizData.length) {
+            renderQuestion();
+            state = 'question';
+        } else {
+            showFinalResult();
+        }
+    } else if (state === 'break') {
+        // 休憩画面から次の問題へ
+        renderQuestion();
+        state = 'question';
     }
+}
+
+function showBreakScreen() {
+    state = 'break';
+    elements.optionsGrid.innerHTML = ''; 
+    elements.questionKanji.textContent = "休息時間";
+    elements.questionFurigana.textContent = "がんばっているね！";
+    
+    const feedbackImg = document.getElementById('feedback-img');
+    if (feedbackImg) {
+        feedbackImg.src = 'images/break.png'; // 息抜き用画像
+    }
+    
+    elements.feedbackTitle.textContent = "おつかれさま！ちょっとひと休み。";
+    elements.feedbackContainer.classList.remove('hidden');
+    elements.actionBtn.textContent = '再開する';
+}
+
+function showFinalResult() {
+    state = 'finished';
+    elements.optionsGrid.innerHTML = '';
+    elements.questionKanji.textContent = "🎉 お疲れ様でした！";
+    elements.questionFurigana.textContent = `正解数: ${score} / ${quizData.length}`;
+    
+    const percent = Math.round((score / quizData.length) * 100);
+    elements.feedbackTitle.textContent = `あなたのスコアは ${percent}点 です！`;
+    
+    elements.feedbackContainer.classList.remove('hidden');
+    elements.actionBtn.textContent = '最初から挑戦する';
+    elements.actionBtn.onclick = () => location.reload();
 }
 
 function checkAnswer() {
