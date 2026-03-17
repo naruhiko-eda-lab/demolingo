@@ -196,6 +196,15 @@ function init() {
         initAudio();
         speakText(quizData[currentIndex].furigana, 'ja-JP');
     });
+// HTML内の class="close-btn" または id="close-btn" を探します
+    const closeBtn = document.querySelector('.close-btn') || document.getElementById('close-btn');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            if (confirm('最初に戻りますか？')) { // 確認ダイアログ（不要ならこの1行と下の"}"を消してください）
+                location.reload(); 
+            }
+        });
+    }
 }
 
 document.addEventListener('DOMContentLoaded', init);
