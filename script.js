@@ -181,7 +181,7 @@ const quizData = [
         id: 33,
         kanji: "行きます",
         furigana: "いきます",
-        options: ["去", "来", "回", "去（过去）"],
+        options: ["去", "来", "回", "出"],
         correctAnswer: "去"
     },
     {
