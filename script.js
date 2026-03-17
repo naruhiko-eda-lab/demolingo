@@ -211,15 +211,28 @@ function playTone(freq, type, duration) {
 }
 
 
-// テキスト読み上げ（中国語と日本語を切り替え可能に）
 function speakText(text, lang = 'zh-CN') {
     if (!text) return;
-    window.speechSynthesis.cancel(); // 前の音声を止める
+    window.speechSynthesis.cancel(); 
+
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = lang;
 
+    // 日本語の場合は少しゆっくりにして、聞き取りやすくする
+    if (lang.includes('ja')) {
+        utterance.rate = 0.85; // 標準は1.0
+        utterance.pitch = 1.0;
+    }
+
     const voices = window.speechSynthesis.getVoices();
-    const targetVoice = voices.find(v => v.lang.includes(lang));
+    // 1. 指定された言語に完全一致し、かつ高品質(Googleなど)な声を探す
+    let targetVoice = voices.find(v => v.lang === lang && (v.name.includes('Google') || v.name.includes('Premium')));
+    
+    // 2. 見つからなければ、言語が含まれるものを探す
+    if (!targetVoice) {
+        targetVoice = voices.find(v => v.lang.includes(lang));
+    }
+
     if (targetVoice) utterance.voice = targetVoice;
 
     window.speechSynthesis.speak(utterance);
