@@ -209,35 +209,38 @@ function renderQuestion() {
     elements.kanji.textContent = question.kanji;
     elements.furigana.textContent = question.furigana;
     elements.optionsGrid.innerHTML = '';
-    
-    // 大事：次の問題に行くときに選択状態をリセットし、ボタンを無効にする
     selectedOption = null;
-    elements.actionBtn.disabled = true;
 
-    // 1. 選択肢をコピーしてシャッフル
+    // 1. 選択肢をコピーしてシャッフルする
     const shuffledOptions = [...question.options].sort(() => Math.random() - 0.5);
 
-    // 2. ボタンを作成
+    // 2. シャッフルした選択肢でボタンを作る
     shuffledOptions.forEach(opt => {
         const btn = document.createElement('button');
         btn.className = 'option-btn';
         btn.textContent = opt;
         
         btn.addEventListener('click', () => {
-            // モバイルでの音声再生を考慮
-            if (typeof initAudio === "function") initAudio();
-            
-            // 重要：クリックしたボタンと値を確実に渡す
-            selectOption(btn, opt);
-            
-            // 音声読み上げ
-            if (typeof speakText === "function") speakText(opt, 'zh-CN');
+            if (state !== 'answering') return;
+            initAudio();
+
+            // --- ここで選択時の処理を直接行う ---
+            // 全ボタンの選択状態を解除
+            Array.from(elements.optionsGrid.children).forEach(b => b.classList.remove('selected'));
+            // クリックしたボタンを選択状態にする
+            btn.classList.add('selected');
+            // 値を保存
+            selectedOption = opt;
+            // 判定ボタンを有効にする
+            elements.actionBtn.disabled = false;
+
+            speakText(opt, 'zh-CN'); 
         });
-        
         elements.optionsGrid.appendChild(btn);
     });
 
     resetFooter();
+    elements.actionBtn.disabled = true; // 最初は判定ボタンを無効に
     state = 'answering';
     elements.quizArea.classList.remove('slide-out');
     elements.quizArea.classList.add('slide-in');
