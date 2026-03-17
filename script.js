@@ -77,6 +77,42 @@ const quizData = [
         furigana: "にじゅうよっか",
         options: ["24号、二十四天", "14号、十四天", "4号、四天", "20号、二十天"],
         correctAnswer: "24号、二十四天"
+    },
+    // 続きの単語として貼り付けてください
+    {
+        id: 14,
+        kanji: "事務所",
+        furigana: "じむしょ",
+        options: ["办公室", "教室", "食堂", "会議室"],
+        correctAnswer: "办公室"
+    },
+    {
+        id: 15,
+        kanji: "受付",
+        furigana: "うけつけ",
+        options: ["接待处", "洗手间", "电梯", "办公室"],
+        correctAnswer: "接待处"
+    },
+    {
+        id: 16,
+        kanji: "昼休み",
+        furigana: "ひるやすみ",
+        options: ["午休", "朝会", "残業", "出張"],
+        correctAnswer: "午休"
+    },
+    {
+        id: 17,
+        kanji: "昨日",
+        furigana: "きのう",
+        options: ["昨天", "今天", "明天", "前天"],
+        correctAnswer: "昨天"
+    },
+    {
+        id: 18,
+        kanji: "歩いて",
+        furigana: "あるいて",
+        options: ["步行", "乘车", "坐地铁", "骑自行车"],
+        correctAnswer: "步行"
     }
 ];
 
