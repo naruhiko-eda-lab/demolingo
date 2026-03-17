@@ -161,15 +161,6 @@ function playTone(freq, type, duration) {
     oscillator.stop(audioCtx.currentTime + duration);
 }
 
-function playCorrectSound() {
-    playTone(600, 'sine', 0.1);
-    setTimeout(() => playTone(800, 'sine', 0.15), 100);
-}
-
-function playIncorrectSound() {
-    playTone(300, 'sawtooth', 0.2);
-    setTimeout(() => playTone(250, 'sawtooth', 0.2), 150);
-}
 
 // テキスト読み上げ（中国語と日本語を切り替え可能に）
 function speakText(text, lang = 'zh-CN') {
