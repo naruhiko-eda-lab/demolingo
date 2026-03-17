@@ -474,20 +474,28 @@ document.addEventListener('DOMContentLoaded', init);
 // script.js の init 関数の中
 function init() {
     currentIndex = 0;
-    score = 0; // スコアをリセット
-    state = 'question'; // 状態を初期化
+    score = 0;
+    state = 'question';
     renderQuestion();
 
-    // 次へボタンの設定
+    // 一旦、古いイベントをリセットするために「新しいボタン」として作り直す手法
+    const newActionBtn = elements.actionBtn.cloneNode(true);
+    elements.actionBtn.parentNode.replaceChild(newActionBtn, elements.actionBtn);
+    elements.actionBtn = newActionBtn;
+
+    // 改めて、新しいボタンに進行管理(handleAction)を登録
     elements.actionBtn.addEventListener('click', () => {
         initAudio();
-        handleAction(); // 進行管理を呼び出す
+        handleAction();
     });
 
-    // スピーカーボタンの設定
+    // スピーカーボタンも同様にリセットして登録
+    const newAudioBtn = elements.audioBtn.cloneNode(true);
+    elements.audioBtn.parentNode.replaceChild(newAudioBtn, elements.audioBtn);
+    elements.audioBtn = newAudioBtn;
+
     elements.audioBtn.addEventListener('click', () => {
         initAudio();
-        // 漢字ではなく「ふりがな」を読ませる設定
         const question = quizData[currentIndex];
         speakText(question.furigana, 'ja-JP');
     });
