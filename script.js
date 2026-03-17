@@ -209,30 +209,35 @@ function renderQuestion() {
     elements.kanji.textContent = question.kanji;
     elements.furigana.textContent = question.furigana;
     elements.optionsGrid.innerHTML = '';
+    
+    // 大事：次の問題に行くときに選択状態をリセットし、ボタンを無効にする
     selectedOption = null;
+    elements.actionBtn.disabled = true;
 
-    // 1. 選択肢をコピーしてシャッフルする
+    // 1. 選択肢をコピーしてシャッフル
     const shuffledOptions = [...question.options].sort(() => Math.random() - 0.5);
 
-    // 2. シャッフルした選択肢でボタンを作る
+    // 2. ボタンを作成
     shuffledOptions.forEach(opt => {
         const btn = document.createElement('button');
         btn.className = 'option-btn';
         btn.textContent = opt;
         
         btn.addEventListener('click', () => {
-            initAudio();
-            // ここでクリックしたボタンと選択肢の値を渡す
+            // モバイルでの音声再生を考慮
+            if (typeof initAudio === "function") initAudio();
+            
+            // 重要：クリックしたボタンと値を確実に渡す
             selectOption(btn, opt);
-            speakText(opt, 'zh-CN');
+            
+            // 音声読み上げ
+            if (typeof speakText === "function") speakText(opt, 'zh-CN');
         });
         
         elements.optionsGrid.appendChild(btn);
     });
 
     resetFooter();
-    // 判定に必要な actionBtn を最初は無効にしておく
-    elements.actionBtn.disabled = true; 
     state = 'answering';
     elements.quizArea.classList.remove('slide-out');
     elements.quizArea.classList.add('slide-in');
