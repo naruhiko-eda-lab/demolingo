@@ -285,25 +285,7 @@ function speakText(text, lang = 'zh-CN') {
 }
 
 // --- メインロジック ---
-function init() {
-    currentIndex = 0;
-    renderQuestion();
 
-    elements.actionBtn.addEventListener('click', () => {
-        initAudio(); // ボタンクリック時に音声機能を起こす
-        handleAction();
-    });
-
-elements.audioBtn.addEventListener('click', () => {
-        initAudio();
-        // 漢字ではなく、ふりがな(furigana)を日本語('ja-JP')で読み上げさせる
-        const question = quizData[currentIndex];
-        speakText(question.furigana, 'ja-JP');
-        
-        // もし中国語の意味も続けて読み上げたい場合は、以下を追加（お好みで）
-        // setTimeout(() => speakText(question.correctAnswer, 'zh-CN'), 1500);
-    });
-}
 
 function renderQuestion() {
     const question = quizData[currentIndex];
@@ -492,24 +474,21 @@ document.addEventListener('DOMContentLoaded', init);
 // script.js の init 関数の中
 function init() {
     currentIndex = 0;
+    score = 0; // スコアをリセット
+    state = 'question'; // 状態を初期化
     renderQuestion();
-    
-    // 既存のチェックボタン
+
+    // 次へボタンの設定
     elements.actionBtn.addEventListener('click', () => {
         initAudio();
-        handleAction();
+        handleAction(); // 進行管理を呼び出す
     });
 
-    // 【追加】「もう一度」ボタンをクリックした時の動作
-    const restartBtn = document.getElementById('restart-btn');
-    if (restartBtn) {
-        restartBtn.addEventListener('click', () => {
-            location.reload(); // ページをリロードして最初からやり直す（一番確実です！）
-        });
-    }
-
+    // スピーカーボタンの設定
     elements.audioBtn.addEventListener('click', () => {
         initAudio();
-        speakText(quizData[currentIndex].kanji, 'ja-JP');
+        // 漢字ではなく「ふりがな」を読ませる設定
+        const question = quizData[currentIndex];
+        speakText(question.furigana, 'ja-JP');
     });
 }
