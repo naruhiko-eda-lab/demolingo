@@ -235,10 +235,14 @@ function init() {
         handleAction();
     });
 
-    elements.audioBtn.addEventListener('click', () => {
+elements.audioBtn.addEventListener('click', () => {
         initAudio();
-        // 漢字は日本語、選択肢（正解）は中国語で読み上げ
-        speakText(quizData[currentIndex].kanji, 'ja-JP');
+        // 漢字ではなく、ふりがな(furigana)を日本語('ja-JP')で読み上げさせる
+        const question = quizData[currentIndex];
+        speakText(question.furigana, 'ja-JP');
+        
+        // もし中国語の意味も続けて読み上げたい場合は、以下を追加（お好みで）
+        // setTimeout(() => speakText(question.correctAnswer, 'zh-CN'), 1500);
     });
 }
 
