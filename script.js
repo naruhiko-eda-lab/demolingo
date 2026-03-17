@@ -194,9 +194,18 @@ function init() {
 
     elements.actionBtn.addEventListener('click', handleBtnClick);
 
+// スピーカーボタンの設定（修正版）
     elements.audioBtn.addEventListener('click', () => {
         initAudio();
-        speakText(quizData[currentIndex].furigana, 'ja-JP');
+        
+        if (state === 'break') {
+            // 中間画面ならメッセージを日本語で読み上げる
+            speakText("がんばっているね！ちょっとひと休み。", 'ja-JP');
+        } else if (state === 'question' || state === 'feedback') {
+            // クイズ中なら、今の問題のふりがなを読み上げる
+            const question = quizData[currentIndex];
+            speakText(question.furigana, 'ja-JP');
+        }
     });
 // HTML内の class="close-btn" または id="close-btn" を探します
     const closeBtn = document.querySelector('.close-btn') || document.getElementById('close-btn');
