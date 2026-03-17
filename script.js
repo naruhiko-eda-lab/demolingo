@@ -113,6 +113,55 @@ const quizData = [
         furigana: "あるいて",
         options: ["步行", "乘车", "坐地铁", "骑自行车"],
         correctAnswer: "步行"
+    },
+    {
+        id: 24,
+        kanji: "お土産",
+        furigana: "おみやげ",
+        options: ["礼物、特产", "名片", "点心", "行李"],
+        correctAnswer: "礼物、特产"
+    },
+    {
+        id: 25,
+        kanji: "手帳",
+        furigana: "てちょう",
+        options: ["记事本", "书", "杂志", "报纸"],
+        correctAnswer: "记事本"
+    },
+    {
+        id: 26,
+        kanji: "食堂",
+        furigana: "しょくどう",
+        options: ["餐厅、食堂", "教室", "会议室", "办公室"],
+        correctAnswer: "餐厅、食堂"
+    },
+    {
+        id: 27,
+        kanji: "郵便局",
+        furigana: "ゆうびんきょく",
+        options: ["邮局", "银行", "图书馆", "百货店"],
+        correctAnswer: "邮局"
+    },
+    {
+        id: 28,
+        kanji: "お国",
+        furigana: "おくに",
+        options: ["（您的）国家", "我的国家", "家郷", "外国"],
+        correctAnswer: "（您的）国家"
+    },
+    {
+        id: 29,
+        kanji: "去年",
+        furigana: "きょねん",
+        options: ["去年", "今年", "明年", "前年"],
+        correctAnswer: "去年"
+    },
+    {
+        id: 30, // 以前のリクエストから追加
+        kanji: "何番",
+        furigana: "なんばん",
+        options: ["几番（几号）", "什么", "多少钱", "谁"],
+        correctAnswer: "几番（几号）"
     }
 ];
 
