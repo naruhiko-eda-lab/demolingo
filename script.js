@@ -286,6 +286,17 @@ function checkAnswer() {
         playIncorrectSound();
     }
 }
+// 正解音を鳴らす関数
+function playCorrectSound() {
+    const audio = new Audio('sounds/correct.mp3');
+    audio.play().catch(e => console.error("正解音の再生に失敗しました。ファイル名や場所を確認してください:", e));
+}
+
+// 不正解音を鳴らす関数
+function playIncorrectSound() {
+    const audio = new Audio('sounds/incorrect.mp3');
+    audio.play().catch(e => console.error("不正解音の再生に失敗しました。:", e));
+}
 
 function nextQuestion() {
     elements.quizArea.classList.add('slide-out');
