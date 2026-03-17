@@ -211,24 +211,28 @@ function renderQuestion() {
     elements.optionsGrid.innerHTML = '';
     selectedOption = null;
 
-    // --- ここから修正：選択肢をランダムに並び替える ---
+    // 1. 選択肢をコピーしてシャッフルする
     const shuffledOptions = [...question.options].sort(() => Math.random() - 0.5);
 
-    // question.options ではなく、混ぜ終わった shuffledOptions を使ってボタンを作ります
+    // 2. シャッフルした選択肢でボタンを作る
     shuffledOptions.forEach(opt => {
         const btn = document.createElement('button');
         btn.className = 'option-btn';
         btn.textContent = opt;
+        
         btn.addEventListener('click', () => {
             initAudio();
+            // ここでクリックしたボタンと選択肢の値を渡す
             selectOption(btn, opt);
-            speakText(opt, 'zh-CN'); 
+            speakText(opt, 'zh-CN');
         });
+        
         elements.optionsGrid.appendChild(btn);
     });
-    // --- ここまで修正 ---
 
     resetFooter();
+    // 判定に必要な actionBtn を最初は無効にしておく
+    elements.actionBtn.disabled = true; 
     state = 'answering';
     elements.quizArea.classList.remove('slide-out');
     elements.quizArea.classList.add('slide-in');
