@@ -13,7 +13,7 @@ const quizData = [
     { id: 7, kanji: "時計", furigana: "とけい", options: ["伞", "钟表", "包", "汽车"], correctAnswer: "钟表" },
     { id: 8, kanji: "机", furigana: "つくえ", options: ["椅子", "桌子", "电脑", "电视"], correctAnswer: "桌子" },
     { id: 11, kanji: "14日", furigana: "じゅうよっか", options: ["14号、十四天", "10号、十天", "4号、四天", "24号、二十四天"], correctAnswer: "14号、十四天" },
-    { id: 12, kanji: "20日", furigana: "はつか", options: ["20号、二十天", "2号、二天", "12号、十二天", "24号、二十四天"], correctAnswer: "20号、二十天" },
+{ id: 12, kanji: "20日", furigana: "はつか", yomi: "ハツカ", options: ["20号、二十天", "2号、二天", "12号、十二天", "24号、二十四天"], correctAnswer: "20号、二十天" },
     { id: 13, kanji: "24日", furigana: "にじゅうよっか", options: ["24号、二十四天", "14号、十四天", "4号、四天", "20号、二十天"], correctAnswer: "24号、二十四天" },
     { id: 14, kanji: "事務所", furigana: "じむしょ", options: ["办公室", "教室", "食堂", "会議室"], correctAnswer: "办公室" },
     { id: 15, kanji: "受付", furigana: "うけつけ", options: ["接待处", "洗手间", "电梯", "办公室"], correctAnswer: "接待处" },
@@ -207,20 +207,16 @@ function init() {
         });
     }
 
-    // 4. スピーカーボタンの設定（ここを確実に修正！）
+// スピーカーボタンの設定
     elements.audioBtn.addEventListener('click', () => {
         initAudio();
-        
-        // 休憩中の場合
         if (state === 'break') {
             speakText("がんばっているね！ちょっとひと休み。", 'ja-JP');
-        } 
-        // それ以外（クイズ中、判定表示中、終了後など）の場合
-        else {
-            const currentQuestion = quizData[currentIndex];
-            if (currentQuestion) {
-                speakText(currentQuestion.furigana, 'ja-JP');
-            }
+        } else {
+            const question = quizData[currentIndex];
+            // ★ ここを修正：yomiがあればそれを読み、なければfuriganaを読む
+            const textToSpeak = question.yomi || question.furigana;
+            speakText(textToSpeak, 'ja-JP');
         }
     });
 }
