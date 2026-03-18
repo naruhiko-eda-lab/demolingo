@@ -211,7 +211,7 @@ function init() {
     elements.audioBtn.addEventListener('click', () => {
         initAudio();
         if (state === 'break') {
-            speakText("がんばっているね！ちょっとひと休み。", 'ja-JP');
+            speakText("おつかれさま！ちょっとひと休み。", 'ja-JP');
         } else {
             const question = quizData[currentIndex];
             // ★ ここを修正：yomiがあればそれを読み、なければfuriganaを読む
