@@ -75,7 +75,7 @@ function speakText(text, lang = 'zh-CN') {
 
 function renderQuestion() {
     const question = quizData[currentIndex];
-    const progress = (currentIndex / quizData.length) * 100;
+const progress = ((currentIndex + 1) / quizData.length) * 100;
     elements.progressBar.style.width = `${progress}%`;
     elements.kanji.textContent = question.kanji;
     elements.furigana.textContent = question.furigana;
