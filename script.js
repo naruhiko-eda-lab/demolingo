@@ -2,7 +2,8 @@ let score = 0;
 let currentIndex = 0;
 let selectedOption = null;
 let state = 'question';
-let missedQuestions = []; // ★間違えた問題を保存する配列
+let missedQuestions = []; 
+let originalTotalQuestions = 0; // ★最初の問題数を保存する変数
 
 const quizData = [
     { id: 1, kanji: "会社員", furigana: "かいしゃいん", options: ["银行员", "医生", "公司职员", "研究人员"], correctAnswer: "公司职员" },
@@ -36,6 +37,7 @@ const quizData = [
     { id: 36, kanji: "仕事", furigana: "しごと", options: ["工作", "休息", "学習", "会議"], correctAnswer: "工作" }
 ];
 
+// 中間地点の計算（単語を増やしても自動で半分を計算します）
 const BREAK_POINT = Math.floor(quizData.length / 2);
 
 const elements = {
@@ -75,8 +77,11 @@ function speakText(text, lang = 'zh-CN') {
 
 function renderQuestion() {
     const question = quizData[currentIndex];
-const progress = ((currentIndex + 1) / quizData.length) * 100;
+    
+    // ★ 78行目付近：進捗バーを最後まで届くように修正
+    const progress = ((currentIndex + 1) / quizData.length) * 100;
     elements.progressBar.style.width = `${progress}%`;
+
     elements.kanji.textContent = question.kanji;
     elements.furigana.textContent = question.furigana;
     elements.optionsGrid.innerHTML = '';
@@ -130,7 +135,6 @@ function checkAnswer() {
         if (feedbackImg) feedbackImg.src = 'images/correct.png';
         playCorrectSound();
     } else {
-        // ★ 間違えた問題を保存する
         missedQuestions.push(question);
         elements.footer.classList.add('incorrect');
         elements.feedbackTitle.textContent = '不正确。';
@@ -144,9 +148,14 @@ function checkAnswer() {
 function handleAction() {
     if (state === 'feedback') {
         currentIndex++;
-        if (currentIndex === BREAK_POINT && state !== 'retrying') {
+        
+        // ★ 休憩判定：全問題数が「最初の数」と同じ、かつ「中間」の時だけ出す（解き直し時は出さない）
+        if (quizData.length === originalTotalQuestions && currentIndex === BREAK_POINT) {
             showBreakScreen();
-        } else if (currentIndex < quizData.length) {
+            return;
+        }
+
+        if (currentIndex < quizData.length) {
             renderQuestion();
         } else {
             showFinalResult();
@@ -175,7 +184,6 @@ function showFinalResult() {
     const percent = Math.round((score / quizData.length) * 100);
     elements.feedbackTitle.textContent = `あなたのスコアは ${percent}点 です！`;
     
-    // ★ ボタンの出し分け：間違えた問題がある場合
     if (missedQuestions.length > 0) {
         elements.actionBtn.textContent = `間違えた ${missedQuestions.length} 問を解き直す`;
         elements.actionBtn.onclick = () => retryMissedQuestions();
@@ -188,15 +196,12 @@ function showFinalResult() {
 }
 
 function retryMissedQuestions() {
-    // クイズデータを間違えたものに入れ替える
     quizData.splice(0, quizData.length, ...missedQuestions); 
-    missedQuestions = []; // リストを空にする
+    missedQuestions = []; 
     currentIndex = 0;
     score = 0;
     state = 'question';
     renderQuestion();
-    
-    // ボタンのイベントを元に戻す（重要）
     elements.actionBtn.onclick = null; 
 }
 
@@ -211,6 +216,9 @@ function resetFooter() {
 }
 
 function init() {
+    // ★ 起動時の問題数を保存
+    originalTotalQuestions = quizData.length;
+    
     quizData.sort(() => Math.random() - 0.5); 
     currentIndex = 0;
     score = 0;
