@@ -205,8 +205,40 @@ function retryMissedQuestions() {
     elements.actionBtn.onclick = null; 
 }
 
-function playCorrectSound() { new Audio('sounds/correct.mp3').play().catch(() => {}); }
-function playIncorrectSound() { new Audio('sounds/incorrect.mp3').play().catch(() => {}); }
+function playCorrectSound() {
+    const audio = new Audio('sounds/correct.mp3');
+    audio.load(); 
+    audio.play().catch(() => {
+        // もしmp3がブロックされたら、予備の電子音を出す
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.frequency.value = 880;
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.5);
+    });
+}
+
+function playIncorrectSound() {
+    const audio = new Audio('sounds/incorrect.mp3');
+    audio.load();
+    audio.play().catch(() => {
+        // もしmp3がブロックされたら、予備の電子音を出す
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'square';
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.frequency.value = 220;
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.5);
+    });
+}
 
 function resetFooter() {
     elements.footer.classList.remove('correct', 'incorrect');
